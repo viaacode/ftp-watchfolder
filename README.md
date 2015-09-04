@@ -15,6 +15,12 @@ Example: python3 watcher.py start /home/viaa/watchfolder
 
 ## Dependencies
 
+If you havn't done so already, install pip3 to use the pip package manager of python:
+
+```
+    sudo apt-get install python3-pip
+```
+
 The daemon relies on 2 non-standard python3 libraries
 
 ### Pika
@@ -22,11 +28,16 @@ The daemon relies on 2 non-standard python3 libraries
 This is used to establish the connection to RabbitMQ. Install this with pip or your package manager
 
 ```
-    python3 pip install pika
+    pip3 install pika
 ```
 
 ```
     sudo apt-get install python-pika
+```
+
+The used library is also included in the branch, your can manually install this with:
+```
+    pip3 install pika.whl
 ```
 
 ### PyInotify
@@ -34,10 +45,17 @@ This is used to establish the connection to RabbitMQ. Install this with pip or y
 This is used to hook into inotify. Install this with pip or your package manager
 
 ```
-    python3 pip install pyinotify
+    pip3 install pyinotify
 ```
 ```
     sudo apt-get install python-pyinotify
+```
+
+The used library is also included in the branchm you can manually install this with:
+
+
+```
+    python3 setup.py install
 ```
 
 ## Starting the daemon
