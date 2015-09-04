@@ -30,6 +30,7 @@ class FileIndex:
 
     def add_file(self, file_name, file_path):
         # Only add the files determined in the ini file
+        logging.debug("Recognizing package file type for: " + file_name)
         file_type = recognizer.determine_file_type(file_name=file_name, config=self.config)
         if file_type is not None:
             package = []
