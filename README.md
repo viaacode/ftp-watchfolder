@@ -13,6 +13,35 @@ Example: python3 watcher.py start /home/viaa/watchfolder
 
 # Configuration
 
+## Dependencies
+
+The daemon relies on 2 non-standard python3 libraries
+
+### Pika
+
+This is used to establish the connection to RabbitMQ. Install this with pip or your package manager
+
+```
+    python3 pip install pika
+```
+
+```
+    sudo apt-get install python-pika
+```
+
+### PyInotify
+
+This is used to hook into inotify. Install this with pip or your package manager
+
+```
+    python3 pip install pyinotify
+```
+```
+    sudo apt-get install python-pyinotify
+```
+
+## Starting the daemon
+
 To start the daemon you will need to create a .watcher.conf file in the directory. The conf file must have the follwoing structure:
 
 ```
@@ -40,6 +69,6 @@ INCOMPLETE_FOLDER_NAME = incomplete                 # Folder name to move failed
 When you start the daemon there will be 2 additional hidden files created by the process:
 
 1. .watcher.pid
-* This file contains the process nummer of the running process for this specific folder. This is used to stop the daemon process for this directory.
+    * This file contains the process nummer of the running process for this specific folder. This is used to stop the daemon process for this directory.
 2. .watcher.log
-* This file contains all logs written by the process. You can watch this file to monitor the running process for this specific directory.
+    * This file contains all logs written by the process. You can watch this file to monitor the running process for this specific directory.
