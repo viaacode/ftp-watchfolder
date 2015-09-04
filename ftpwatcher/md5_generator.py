@@ -5,12 +5,12 @@ __author__ = 'viaa'
 
 
 def generate_md5(file_path):
-    logging.debug("Generating MD5")
     try:
-        hash = hashlib.md5()
-        with open(file_path, "r", encoding='utf-8') as f:
-            for chunk in iter(lambda: f.read(4096), ""):
-                hash.update(chunk.encode('utf-8'))
-        return hash.hexdigest()
+        logging.debug("Generating MD5")
+        with open(file_path, 'rb') as file_to_check:
+            # read contents of the file
+            data = file_to_check.read()
+            # pipe contents of the file through
+            return hashlib.md5(data).hexdigest()
     except Exception as ex:
-        logging.error("Could not generate md5 for: " + file_path + ". (" + type(ex).__name__ + ")")
+        logging.error("Could not generate md5 for " + file_path + "(" + type(ex).__name__ + ")")

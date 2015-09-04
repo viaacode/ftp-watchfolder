@@ -9,7 +9,4 @@ def scan(directory_path, file_index):
     if os.path.isdir(directory_path):
         for file in os.listdir(directory_path):
             logging.debug("Found file: " + file)
-            # try:
             file_index.add_file(file_name=file, file_path=directory_path)
-            # except TypeError as ex:
-            #    logging.error(type(ex))

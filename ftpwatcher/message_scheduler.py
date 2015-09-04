@@ -17,7 +17,7 @@ def send_message_if_complete(file_index, index_name, config, scheduler, counter)
             del file_index[index_name]
         except Exception as ex:
             logging.fatal("Could not send message due to connection issues (" + type(ex).__name__ + ")")
-    elif counter == 10:
+    elif counter == config['CHECK_PACKAGE_AMOUNT']:
         try:
             send_error_message(package, config)
             del file_index[index_name]
