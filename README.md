@@ -37,7 +37,7 @@ This is used to establish the connection to RabbitMQ. Install this with pip or y
 
 The used library is also included in the branch, your can manually install this with:
 ```
-    pip3 install pika.whl
+    pip3 install pika-0.10.0-py2.py3-none-any.whl
 ```
 
 ### PyInotify
@@ -51,7 +51,7 @@ This is used to hook into inotify. Install this with pip or your package manager
     sudo apt-get install python-pyinotify
 ```
 
-The used library is also included in the branchm you can manually install this with:
+The used library is also included in the branch you can manually install this with:
 
 
 ```
@@ -76,9 +76,10 @@ RABBIT_MQ_SUCCESS_QUEUE = vrt.video.1               # The queue name to bind to 
 RABBIT_MQ_ERROR_EXCHANGE = daemon.errors            # Exchange name for failed packages
 RABBIT_MQ_ERROR_QUEUE = incomplete_packages         # Queue name to bind to the failed packag exchange
 RABBIT_MQ_TOPIC_TYPE = direct                       # Topic type set on the Exchanges on creations if they do not exist
-RABBIT_MQ_USER = admin                              # Username for RabbitMQ access
-RABBIT_MQ_PASSWORD = test123                        # Password for RabbitMQ user specified above
-CHECK_PACKAGE_INTERVAL = 1                          # Interval the daemon has to wait between package completion checks
+RABBIT_MQ_USER = [username]                         # Username for RabbitMQ access
+RABBIT_MQ_PASSWORD = [pasword]                      # Password for RabbitMQ user specified above
+CHECK_PACKAGE_INTERVAL = 1                          # Interval the timer has to wait between package completion checks
+CHECK_PACKAGE_AMOUNT = 10                           # Times the timer will check if the package is complete
 PROCESSING_FOLDER_NAME = processing                 # Folder name to move completed packages to, this folder has to exist in the folder you want to watch
 INCOMPLETE_FOLDER_NAME = incomplete                 # Folder name to move failed packages to, same as above.
 
