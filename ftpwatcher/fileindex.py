@@ -1,9 +1,9 @@
 import datetime
 import time
-import re
 import logging
 from ftpwatcher import md5_generator
 from ftpwatcher import message_scheduler
+from ftpwatcher import package_file_recognizer as recognizer
 from threading import Thread
 
 __author__ = 'viaa'
@@ -23,14 +23,6 @@ def create_file_entry(file_path, file_name, file_type):
     }
 
 
-def match_to_regex(file_names, allowed_filetypes):
-    if allowed_filetypes:
-        parsed_allowed_filetypes = allowed_filetypes.replace(".", "\.")
-        return re.compile(".*\.(" + parsed_allowed_filetypes + ")$").match(file_names)
-    else:
-        return False
-
-
 class FileIndex:
     def __init__(self, config):
         self.files_in_dir = {}
@@ -38,7 +30,7 @@ class FileIndex:
 
     def add_file(self, file_name, file_path):
         # Only add the files determined in the ini file
-        file_type = self.determine_file_type(file_name=file_name)
+        file_type = recognizer.determine_file_type(file_name=file_name, config=self.config)
         if file_type is not None:
             package = []
             # Unique Identifier for a package
@@ -62,14 +54,3 @@ class FileIndex:
 
     def get_package(self, file_name):
         return self.files_in_dir[file_name]
-
-    def determine_file_type(self, file_name):
-        if match_to_regex(file_names=file_name, allowed_filetypes=self.config['ESSENCE_FILE_TYPE']):
-            return "essence"
-        elif match_to_regex(file_names=file_name, allowed_filetypes=self.config['SIDECAR_FILE_TYPE']):
-            return "sidecar"
-        elif match_to_regex(file_names=file_name, allowed_filetypes=self.config['COLLATERAL_FILE_TYPE']):
-            return "collateral"
-        else:
-            return None
-
