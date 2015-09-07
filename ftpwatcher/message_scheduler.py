@@ -29,6 +29,7 @@ def send_message_if_complete(file_index, index_name, config, scheduler, counter)
 
 def send_message(package, config):
     logging.debug("Found a complete package, processing...")
+    file_util.move_file(package, config['PROCESSING_FOLDER_NAME'])
     rabbit.send_message(
         host=config['RABBIT_MQ_HOST'],
         port=int(config['RABBIT_MQ_PORT']),
@@ -40,7 +41,6 @@ def send_message(package, config):
         routing_key=config['FLOW_ID'],
         message=message_generator.create_mq_message(package, config)
     )
-    file_util.move_file(package, config['PROCESSING_FOLDER_NAME'])
     pass
 
 
