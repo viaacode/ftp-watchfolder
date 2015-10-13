@@ -33,7 +33,7 @@ def send_message(package, config):
     rabbit.send_message(
         host=config['RABBIT_MQ_HOST'],
         port=int(config['RABBIT_MQ_PORT']),
-        username=config ['RABBIT_MQ_USER'],
+        username=config['RABBIT_MQ_USER'],
         password=config['RABBIT_MQ_PASSWORD'],
         exchange=config['RABBIT_MQ_SUCCESS_EXCHANGE'],
         topic_type=config['RABBIT_MQ_TOPIC_TYPE'],
@@ -49,7 +49,7 @@ def send_error_message(package, config):
     rabbit.send_message(
         host=config['RABBIT_MQ_HOST'],
         port=int(config['RABBIT_MQ_PORT']),
-        username=config ['RABBIT_MQ_USER'],
+        username=config['RABBIT_MQ_USER'],
         password=config['RABBIT_MQ_PASSWORD'],
         exchange=config['RABBIT_MQ_ERROR_EXCHANGE'],
         topic_type=config['RABBIT_MQ_TOPIC_TYPE'],
