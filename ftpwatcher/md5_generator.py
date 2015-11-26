@@ -14,13 +14,3 @@ def generate_md5(file_path):
         return md5.digest()
     except Exception as ex:
         logging.error("Could not generate md5 for " + file_path + "(" + type(ex).__name__ + ")")
-
-
-
-
-def generate(file_path):
-    md5 = hashlib.md5()
-    with open(file_path,'rb') as f:
-        for chunk in iter(lambda: f.read(8192), b''):
-            md5.update(chunk)
-    return md5.digest()
