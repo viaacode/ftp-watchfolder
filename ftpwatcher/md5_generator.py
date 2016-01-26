@@ -6,7 +6,7 @@ __author__ = 'viaa'
 
 def generate_md5(file_path):
     try:
-        logging.debug("Generating MD5")
+        logging.info("Generating MD5 for {}".format(file_path))
         md5 = hashlib.md5()
         with open(file_path,'rb') as f:
             for chunk in iter(lambda: f.read(128 * md5.block_size), b''):
