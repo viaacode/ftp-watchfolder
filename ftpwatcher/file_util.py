@@ -1,14 +1,17 @@
-__author__ = 'root'
-
 import os
+import logging
 
 
 def move_file(package, folder):
     for file_entry in package:
         new_path = file_entry.get('file_path') + "/" + folder
+        source = file_entry.get('file_path') + "/" + file_entry.get('file_name')
+        destination = new_path + "/" + file_entry.get('file_name')
+        logging.info("Moving '{}' to '{}'.")
         os.rename(
-            file_entry.get('file_path') + "/" + file_entry.get('file_name'),
-            new_path + "/" + file_entry.get('file_name')
+                source,
+                destination
         )
         file_entry.update({'file_path': new_path})
+        logging.info("File moved.")
     pass

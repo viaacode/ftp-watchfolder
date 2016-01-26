@@ -13,22 +13,25 @@ def send_message_if_complete(file_index, index_name, config, scheduler, counter)
     package = file_index.get(index_name)
     if analyzer.is_package_complete(package, config):
         try:
+            logging.info('Package \'{}\' complete.'.format(index_name))
             send_message(package, config)
             del file_index[index_name]
         except Exception as ex:
-            logging.fatal("Could not send message due to connection issues (" + type(ex).__name__ + ")")
+            logging.critical("Could not send message due to connection issues (" + type(ex).__name__ + ")")
     elif int(counter) == int(config['CHECK_PACKAGE_AMOUNT']):
         try:
+            logging.info('Package \'{}\' considered incomplete. Maximum checks reached.'.format(index_name))
             send_error_message(package, config)
             del file_index[index_name]
         except Exception as ex:
-            logging.fatal("Could not send message due to connection issues (" + type(ex).__name__ + ")")
+            logging.critical("Could not send message due to connection issues (" + type(ex).__name__ + ")")
     else:
+        logging.info('Package {} is still incomplete. Check {} of {}'.format(counter + 1, int(config['CHECK_PACKAGE_AMOUNT'])))
         add_scheduler_event(scheduler, file_index, index_name, config, counter + 1)
 
 
 def send_message(package, config):
-    logging.debug("Found a complete package, processing...")
+    logging.info("Processing package...")
     file_util.move_file(package, config['PROCESSING_FOLDER_NAME'])
     rabbit.send_message(
         host=config['RABBIT_MQ_HOST'],
@@ -45,7 +48,7 @@ def send_message(package, config):
 
 
 def send_error_message(package, config):
-    logging.debug("Package completion time-out, processing...")
+    logging.info("Processing package...")
     rabbit.send_message(
         host=config['RABBIT_MQ_HOST'],
         port=int(config['RABBIT_MQ_PORT']),

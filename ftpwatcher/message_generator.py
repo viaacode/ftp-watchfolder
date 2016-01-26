@@ -1,4 +1,5 @@
 import json
+import datetime
 
 
 def create_mq_message(package, config):
@@ -8,5 +9,6 @@ def create_mq_message(package, config):
         "server": config['FTP_SERVER'],
         "username": config['FTP_USERNAME'],
         "password": config['FTP_PASSWORD'],
-        "sid_package": package
+        "sid_package": package,
+        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     })

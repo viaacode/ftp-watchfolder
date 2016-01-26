@@ -6,7 +6,7 @@ __author__ = 'viaa'
 
 
 def send_message(host, port, username, password, exchange, topic_type, queue, routing_key, message):
-        logging.debug("Connecting to Rabbit MQ")
+        logging.info("Connecting to Rabbit MQ")
         connection = pika.BlockingConnection(pika.ConnectionParameters(
             host=host,
             port=port,
@@ -18,5 +18,5 @@ def send_message(host, port, username, password, exchange, topic_type, queue, ro
         channel.queue_bind(queue=queue, exchange=exchange, routing_key=routing_key)
         channel.basic_publish(exchange=exchange, routing_key=routing_key, body=message)
         connection.close()
-        logging.debug("Message published to: " + exchange + "/" + routing_key)
+        logging.info("Message published to: " + exchange + "/" + routing_key)
 
