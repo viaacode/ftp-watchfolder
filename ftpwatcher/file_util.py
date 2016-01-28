@@ -7,7 +7,7 @@ def move_file(package, folder):
         new_path = file_entry.get('file_path') + "/" + folder
         source = file_entry.get('file_path') + "/" + file_entry.get('file_name')
         destination = new_path + "/" + file_entry.get('file_name')
-        logging.info("Moving '{}' to '{}'.")
+        logging.info("Moving '{}' to '{}'.".format(source, destination))
         os.rename(
                 source,
                 destination
