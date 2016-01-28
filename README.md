@@ -12,6 +12,8 @@ python3 watcher.py start|stop|restart [directory_path]
 Example: python3 watcher.py start /home/viaa/watchfolder
 
 # Configuration
+## IMPORTANT
+https://github.com/viaacode/ftp-watchfolder/issues/4
 
 ## Dependencies
 
