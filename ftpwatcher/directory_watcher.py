@@ -9,7 +9,7 @@ import datetime
 def watch(directory_path, file_index_instance):
     logging.info("Starting watcher for directory: " + directory_path)
     wm = pyinotify.WatchManager()
-    masktypes = (pyinotify.IN_CLOSE_WRITE | pyinotify.IN_MOVED_TO)
+    masktypes = pyinotify.IN_CLOSE_WRITE | pyinotify.IN_MOVED_TO
     notifier = pyinotify.Notifier(wm, EventHandler(file_index_instance))
     wm.add_watch(directory_path, mask=masktypes)
     notifier.loop()

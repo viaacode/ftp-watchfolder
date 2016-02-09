@@ -1,6 +1,7 @@
 """Generic linux daemon base class for python 3.x."""
 
 import sys, os, time, atexit, signal
+from time import sleep
 
 
 class daemon:
@@ -114,6 +115,7 @@ class daemon:
     def restart(self):
         """Restart the daemon."""
         self.stop()
+        sleep(2)
         self.start()
 
     def run(self):
