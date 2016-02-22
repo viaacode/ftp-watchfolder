@@ -13,7 +13,7 @@ def config_logger(file_path):
     logging.basicConfig(
         filename=file_path + '/.watcher.log',
         filemode='w',
-        level=logging.DEBUG,
+        level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         datefmt='%m/%d/%Y %I:%M:%S %p'
     )
