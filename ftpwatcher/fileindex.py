@@ -18,15 +18,15 @@ def create_file_entry(file_path, file_name, file_type):
         "file_name": file_name,
         "file_path": file_path,
         "timestamp": datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%dT%H:%M:%S'),
-        "md5": md5_generator.generate_md5(file_path + "/" + file_name),
+        "md5": "",
         "file_type": file_type
     }
-
 
 class FileIndex:
     def __init__(self, config):
         self.files_in_dir = {}
         self.config = config
+        self.md5_generator = md5_generator.Md5_generator(self)
 
     def add_file(self, file_name, file_path):
         # Only add the files determined in the ini file
@@ -39,6 +39,8 @@ class FileIndex:
             index_name = get_index_name(file_name)
             # Generate a file entry with wanted data
             file_entry = create_file_entry(file_path=file_path, file_name=file_name, file_type=file_type)
+            # Give order to generate MD5
+            self.md5_generator.generate_md5(file_path, file_name)
             # If the dict already contains package files, update the list
             if index_name in self.files_in_dir:
                 start_new_timer = False

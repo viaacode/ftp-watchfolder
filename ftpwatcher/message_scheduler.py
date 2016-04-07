@@ -11,6 +11,7 @@ from ftpwatcher import rabbit_connector as rabbit
 
 def send_message_if_complete(file_index, index_name, config, scheduler, counter):
     package = file_index.get(index_name)
+    logging.info('Checking ' + file_index)
     if analyzer.is_package_complete(package, config):
         try:
             logging.info('Package \'{}\' complete.'.format(index_name))
