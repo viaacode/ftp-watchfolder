@@ -14,9 +14,9 @@ def get_index_name(file_name):
 
 
 def create_file_entry(self, file_path, file_name, file_type):
-    if self.config['MD5_CALC']:
+    if self.config['MD5_CALC'].upper() == 'true'.upper():
         md5 = md5_generator.generate_md5(file_path + "/" + file_name)
-    else:
+    elif not self.config['MD5_CALC'] or self.config['MD5_CALC'].upper() == 'false'.upper() or self.config['MD5_CALC'] == '':
         md5 = ""
     return {
         "file_name": file_name,
