@@ -13,12 +13,16 @@ def get_index_name(file_name):
     return file_name.split(".")[0]
 
 
-def create_file_entry(file_path, file_name, file_type):
+def create_file_entry(self, file_path, file_name, file_type):
+    if self.config['MD5_CALC']:
+        md5 = md5_generator.generate_md5(file_path + "/" + file_name)
+    else:
+        md5 = ""
     return {
         "file_name": file_name,
         "file_path": file_path,
         "timestamp": datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%dT%H:%M:%S'),
-        "md5": md5_generator.generate_md5(file_path + "/" + file_name),
+        "md5": md5,
         "file_type": file_type
     }
 
@@ -38,7 +42,7 @@ class FileIndex:
             # Unique Identifier for a package
             index_name = get_index_name(file_name)
             # Generate a file entry with wanted data
-            file_entry = create_file_entry(file_path=file_path, file_name=file_name, file_type=file_type)
+            file_entry = create_file_entry(self, file_path=file_path, file_name=file_name, file_type=file_type)
             # If the dict already contains package files, update the list
             if index_name in self.files_in_dir:
                 start_new_timer = False
