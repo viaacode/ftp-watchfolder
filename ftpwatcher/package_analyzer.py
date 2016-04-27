@@ -23,7 +23,8 @@ def loop(file_index, config):
                                                                                      max_nr_of_checks))
         except Exception as ex:
             logging.error('Checking file_index failed: {}'.format(str(ex)))
-            time.sleep(int(config['CHECK_PACKAGE_INTERVAL']))
+
+        time.sleep(int(config['CHECK_PACKAGE_INTERVAL']))
 
 
 def is_package_complete(package, config):
