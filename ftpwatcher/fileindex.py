@@ -63,7 +63,11 @@ class FileIndex:
 
     def remove_package(self, package_name):
         logging.info("Removing Index {}".format(package_name))
-        del self.packages[package_name]
+        new_index = {}
+        for package_key in self.packages.keys():
+            if not package_key == package_name:
+                new_index.update({package_key: self.packages.get(package_key)})
+        self.packages = new_index
     pass
 
 
