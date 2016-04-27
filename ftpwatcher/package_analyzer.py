@@ -16,11 +16,11 @@ def loop(file_index, config, rabbit_connector):
                 if is_package_complete(package, config):
                     logging.info('Package \'{}\' complete.'.format(index_name))
                     send_message(package, config, rabbit_connector)
-                    remove_index(file_index, index_name)
+                    file_index.remove_package(index_name)
                 elif package.reached_max_checks(max_nr_of_checks):
                     logging.info('Package \'{}\' considered incomplete. Maximum checks reached.'.format(index_name))
                     send_error_message(package, config, rabbit_connector)
-                    remove_index(file_index, index_name)
+                    file_index.remove_package(index_name)
                 else:
                     package.increment_times_checked()
                     logging.info('Package {} is still incomplete. Check {} of {}'.format(index_name, package.times_checked, max_nr_of_checks))
@@ -28,11 +28,6 @@ def loop(file_index, config, rabbit_connector):
                 logging.error('Checking file_index failed: {}'.format(str(ex)))
         logging.info('{} incomplete packages remaining...'.format(len(file_index.packages)))
         time.sleep(int(config['CHECK_PACKAGE_INTERVAL']))
-
-
-def remove_index(file_index, index_name):
-    logging.info("Removing Index {}".format(index_name))
-    del file_index.packages[index_name]
 
 
 def is_package_complete(package, config):

@@ -60,6 +60,10 @@ class FileIndex:
             logging.info("Accepted file for package handling: " + file_name)
         else:
             logging.info("Refused file for package handling: " + file_name)
+
+    def remove_package(self, package_name):
+        logging.info("Removing Index {}".format(package_name))
+        del self.packages[package_name]
     pass
 
 
