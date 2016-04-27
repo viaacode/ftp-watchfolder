@@ -49,17 +49,20 @@ class FileIndex:
         # Only add the files determined in the ini file
         logging.info("Recognizing package file type for: " + file_name)
         file_type = determine_file_type(file_name, self.config)
-        if file_type is not None:
-            package_name = get_package_name(file_name)
-            if package_name in self.packages:
-                self.packages.get(package_name).add_file(file_path, file_name, file_type, self.config)
+        try:
+            if file_type is not None:
+                package_name = get_package_name(file_name)
+                if package_name in self.packages:
+                    self.packages.get(package_name).add_file(file_path, file_name, file_type, self.config)
+                else:
+                    package = Package()
+                    package.add_file(file_path, file_name, file_type, self.config)
+                    self.packages.update({package_name: package})
+                logging.info("Accepted file for package handling: " + file_name)
             else:
-                package = Package()
-                package.add_file(file_path, file_name, file_type, self.config)
-                self.packages.update({package_name: package})
-            logging.info("Accepted file for package handling: " + file_name)
-        else:
-            logging.info("Refused file for package handling: " + file_name)
+                logging.info("Refused file for package handling: " + file_name)
+        except Exception as ex:
+            logging.error("Could not add file to index " + file_path + "(" + type(ex).__name__ + ")")
         pass
 
 
