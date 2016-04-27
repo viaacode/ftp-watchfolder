@@ -9,7 +9,8 @@ def loop(file_index, config):
     max_nr_of_checks = int(config['CHECK_PACKAGE_AMOUNT'])
     while not_gonna_give_you_up:
         logging.info("Checking file_index on completed packages...")
-        for index_name, package in file_index:
+        for index_name in file_index.packages.keys():
+            package = file_index.packages.get(index_name)
             if is_package_complete(package, config):
                 logging.info('Package \'{}\' complete.'.format(index_name))
                 send_message(package, config)
@@ -27,7 +28,7 @@ def is_package_complete(package, config):
     has_sidecar = False
     has_collateral = False
 
-    for entry in package:
+    for entry in package.files:
         file_type = entry.get("file_type")
         if file_type == "essence":
             has_essence = True
