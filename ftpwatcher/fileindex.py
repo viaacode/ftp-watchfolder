@@ -15,7 +15,7 @@ def get_package_name(file_name):
 
 
 def generate_md5(file_path, config):
-    if bool(config['MD5_CALC']):
+    if config['MD5_CALC'] and config['MD5_CALC'].toUpper() == 'TRUE':
         return md5_generator.generate_md5(file_path)
     else:
         return ""
