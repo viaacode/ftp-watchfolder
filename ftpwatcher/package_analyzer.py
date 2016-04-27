@@ -15,12 +15,14 @@ def loop(file_index, config):
                 if is_package_complete(package, config):
                     logging.info('Package \'{}\' complete.'.format(index_name))
                     send_message(package, config)
+                    del file_index[index_name]
                 elif package.reached_max_checks(max_nr_of_checks):
                     logging.info('Package \'{}\' considered incomplete. Maximum checks reached.'.format(index_name))
                     send_error_message(package, config)
-                package.increment_times_checked()
-                logging.info('Package {} is still incomplete. Check {} of {}'.format(index_name, package.times_checked,
-                                                                                     max_nr_of_checks))
+                    del file_index[index_name]
+                else:
+                    package.increment_times_checked()
+                    logging.info('Package {} is still incomplete. Check {} of {}'.format(index_name, package.times_checked, max_nr_of_checks))
             except Exception as ex:
                 logging.error('Checking file_index failed: {}'.format(str(ex)))
         time.sleep(int(config['CHECK_PACKAGE_INTERVAL']))
