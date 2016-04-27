@@ -1,10 +1,11 @@
+import configparser
 import logging
 import logging.config
 import os
 import sys
-import configparser
+
 import ftpwatcher
-from ftpwatcher.daemon3x import daemon
+from ftpwatcher.util.daemon3x import daemon
 
 __author__ = 'viaa'
 
