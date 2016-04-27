@@ -5,9 +5,10 @@ from ftpwatcher.messenger import send_message, send_error_message
 
 
 def loop(file_index, config):
-    never_gonna_give_you_up = True
+    not_gonna_give_you_up = True
     max_nr_of_checks = int(config['CHECK_PACKAGE_AMOUNT'])
-    while never_gonna_give_you_up:
+    while not_gonna_give_you_up:
+        logging.info("Checking file_index on completed packages...")
         for index_name, package in file_index:
             if is_package_complete(package, config):
                 logging.info('Package \'{}\' complete.'.format(index_name))
