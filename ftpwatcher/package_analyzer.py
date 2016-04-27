@@ -22,7 +22,6 @@ def loop(file_index, config, rabbit_connector):
                     send_error_message(package, config, rabbit_connector)
                     remove_index(file_index, index_name)
                 else:
-                    remaining_packages.pop()
                     package.increment_times_checked()
                     logging.info('Package {} is still incomplete. Check {} of {}'.format(index_name, package.times_checked, max_nr_of_checks))
             except Exception as ex:
@@ -33,7 +32,7 @@ def loop(file_index, config, rabbit_connector):
 
 def remove_index(file_index, index_name):
     logging.info("Removing Index {}".format(index_name))
-    del file_index.packages[file_index]
+    del file_index.packages[index_name]
 
 
 def is_package_complete(package, config):
