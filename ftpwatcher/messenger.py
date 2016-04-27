@@ -1,6 +1,4 @@
 import logging
-import sched
-import time
 
 from ftpwatcher.util import rabbit_connector as rabbit, file_util, message_generator
 
@@ -19,7 +17,6 @@ def send_message(package, config):
             routing_key=config['FLOW_ID'],
             message=message_generator.create_mq_message(package.files, config)
     )
-    pass
 
 
 def send_error_message(package, config):
@@ -36,4 +33,3 @@ def send_error_message(package, config):
         message=message_generator.create_mq_message(package.files, config)
     )
     file_util.move_file(package, config['INCOMPLETE_FOLDER_NAME'])
-    pass
