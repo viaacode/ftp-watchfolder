@@ -22,7 +22,7 @@ def loop(file_index, config):
                 logging.info('Package {} is still incomplete. Check {} of {}'.format(index_name, package.times_checked,
                                                                                      max_nr_of_checks))
         except Exception as ex:
-            logging.error('Checking file failed: {}'.format(str(ex)))
+            logging.error('Checking file_index failed: {}'.format(str(ex)))
             time.sleep(int(config['CHECK_PACKAGE_INTERVAL']))
 
 
