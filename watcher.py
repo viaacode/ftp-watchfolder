@@ -22,6 +22,10 @@ def config_logger(file_path):
 
 
 class Watcher(daemon):
+    def __init__(self, pidfile):
+        super().__init__(pidfile)
+        self.connector = None
+
     def run(self):
         watching_folder = sys.argv[2]
         config = configparser.ConfigParser()
@@ -38,7 +42,7 @@ class Watcher(daemon):
             queue=config['RABBIT_MQ_SUCCESS_QUEUE'],
             routing_key=config['FLOW_ID']
         )
-        ftpwatcher.watch_folder(sys.argv[2], default, connector)
+        ftpwatcher.watch_folder(sys.argv[2], default, self.connector)
 
     def stop(self):
         self.connector.close_connection()
