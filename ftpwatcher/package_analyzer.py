@@ -12,7 +12,7 @@ def loop(file_index, config):
         for index_name in file_index.packages.keys():
             try:
                 package = file_index.packages.get(index_name)
-                if is_package_complete(package.files, config):
+                if is_package_complete(package, config):
                     logging.info('Package \'{}\' complete.'.format(index_name))
                     send_message(package, config)
                 elif package.reached_max_checks(max_nr_of_checks):
