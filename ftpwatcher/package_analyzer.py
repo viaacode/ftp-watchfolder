@@ -8,19 +8,22 @@ def loop(file_index, config):
     not_gonna_give_you_up = True
     max_nr_of_checks = int(config['CHECK_PACKAGE_AMOUNT'])
     while not_gonna_give_you_up:
-        logging.info("Checking file_index on completed packages...")
-        for index_name in file_index.packages.keys():
-            package = file_index.packages.get(index_name)
-            if is_package_complete(package, config):
-                logging.info('Package \'{}\' complete.'.format(index_name))
-                send_message(package, config)
-            elif package.reached_max_checks(max_nr_of_checks):
-                logging.info('Package \'{}\' considered incomplete. Maximum checks reached.'.format(index_name))
-                send_error_message(package, config)
-            package.increment_times_checked()
-            logging.info('Package {} is still incomplete. Check {} of {}'.format(index_name, package.times_checked,
-                                                                                 max_nr_of_checks))
-        time.sleep(int(config['CHECK_PACKAGE_INTERVAL']))
+        try:
+            logging.info("Checking file_index on completed packages...")
+            for index_name in file_index.packages.keys():
+                package = file_index.packages.get(index_name)
+                if is_package_complete(package, config):
+                    logging.info('Package \'{}\' complete.'.format(index_name))
+                    send_message(package, config)
+                elif package.reached_max_checks(max_nr_of_checks):
+                    logging.info('Package \'{}\' considered incomplete. Maximum checks reached.'.format(index_name))
+                    send_error_message(package, config)
+                package.increment_times_checked()
+                logging.info('Package {} is still incomplete. Check {} of {}'.format(index_name, package.times_checked,
+                                                                                     max_nr_of_checks))
+        except Exception as ex:
+            logging.error('Checking file failed: {}'.format(str(ex)))
+            time.sleep(int(config['CHECK_PACKAGE_INTERVAL']))
 
 
 def is_package_complete(package, config):
