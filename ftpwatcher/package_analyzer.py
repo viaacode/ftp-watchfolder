@@ -17,7 +17,7 @@ def loop(file_index, config):
                     send_message(package, config)
                 elif package.reached_max_checks(max_nr_of_checks):
                     logging.info('Package \'{}\' considered incomplete. Maximum checks reached.'.format(index_name))
-                    send_error_message(package.files, config)
+                    send_error_message(package, config)
                 package.increment_times_checked()
                 logging.info('Package {} is still incomplete. Check {} of {}'.format(index_name, package.times_checked,
                                                                                      max_nr_of_checks))

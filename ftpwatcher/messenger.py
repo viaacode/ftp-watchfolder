@@ -17,7 +17,7 @@ def send_message(package, config):
             topic_type=config['RABBIT_MQ_TOPIC_TYPE'],
             queue=config['RABBIT_MQ_SUCCESS_QUEUE'],
             routing_key=config['FLOW_ID'],
-            message=message_generator.create_mq_message(package, config)
+            message=message_generator.create_mq_message(package.files, config)
     )
     pass
 
@@ -33,7 +33,7 @@ def send_error_message(package, config):
         topic_type=config['RABBIT_MQ_TOPIC_TYPE'],
         queue=config['RABBIT_MQ_ERROR_QUEUE'],
         routing_key=config['FLOW_ID'],
-        message=message_generator.create_mq_message(package, config)
+        message=message_generator.create_mq_message(package.files, config)
     )
     file_util.move_file(package, config['INCOMPLETE_FOLDER_NAME'])
     pass
