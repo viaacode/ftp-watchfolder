@@ -6,6 +6,7 @@ import sys
 
 import ftpwatcher
 from ftpwatcher.util.daemon3x import daemon
+from ftpwatcher.util.rabbit_connector import Connector
 
 __author__ = 'viaa'
 
@@ -27,16 +28,21 @@ class Watcher(daemon):
         config.read(watching_folder + "/.watcher.conf")
         default = config['DEFAULT']
         config_logger(sys.argv[2])
-        ftpwatcher.watch_folder(sys.argv[2], default)
+        self.connector = Connector(
+            host=config['RABBIT_MQ_HOST'],
+            port=int(config['RABBIT_MQ_PORT']),
+            username=config['RABBIT_MQ_USER'],
+            password=config['RABBIT_MQ_PASSWORD'],
+            exchange=config['RABBIT_MQ_SUCCESS_EXCHANGE'],
+            topic_type=config['RABBIT_MQ_TOPIC_TYPE'],
+            queue=config['RABBIT_MQ_SUCCESS_QUEUE'],
+            routing_key=config['FLOW_ID']
+        )
+        ftpwatcher.watch_folder(sys.argv[2], default, connector)
 
-
-"""if __name__ == "__main__":
-    watching_folder = sys.argv[2]
-    config = configparser.ConfigParser()
-    config.read(watching_folder + "/.watcher.conf")
-    default = config['DEFAULT']
-    config_logger(sys.argv[2])
-    ftpwatcher.watch_folder(sys.argv[2], default)"""
+    def stop(self):
+        self.connector.close_connection()
+        super().stop()
 
 
 def print_error(message):

@@ -4,7 +4,7 @@ import time
 from ftpwatcher.messenger import send_message, send_error_message
 
 
-def loop(file_index, config):
+def loop(file_index, config, rabbit_connector):
     not_gonna_give_you_up = True
     max_nr_of_checks = int(config['CHECK_PACKAGE_AMOUNT'])
     while not_gonna_give_you_up:
@@ -14,11 +14,11 @@ def loop(file_index, config):
                 package = file_index.packages.get(index_name)
                 if is_package_complete(package, config):
                     logging.info('Package \'{}\' complete.'.format(index_name))
-                    send_message(package, config)
+                    send_message(package, config, rabbit_connector)
                     file_index.packages.pop(index_name)
                 elif package.reached_max_checks(max_nr_of_checks):
                     logging.info('Package \'{}\' considered incomplete. Maximum checks reached.'.format(index_name))
-                    send_error_message(package, config)
+                    send_error_message(package, config, rabbit_connector)
                     file_index.packages.pop(index_name)
                 else:
                     package.increment_times_checked()

@@ -3,20 +3,30 @@ import logging
 from pika.credentials import PlainCredentials
 
 
-def send_message(host, port, username, password, exchange, topic_type, queue, routing_key, message):
-    logging.info("Connecting to Rabbit MQ")
-    try:
-        connection = pika.BlockingConnection(pika.ConnectionParameters(
+class Connector:
+    def __init__(self, host, port, username, password, exchange, topic_type, queue, routing_key):
+        logging.info("Connecting to Rabbit MQ")
+        self.connection = pika.BlockingConnection(pika.ConnectionParameters(
                 host=host,
                 port=port,
                 credentials=PlainCredentials(username, password)
         ))
-        channel = connection.channel()
-        channel.exchange_declare(exchange=exchange, type=topic_type)
-        channel.queue_declare(queue=queue)
-        channel.queue_bind(queue=queue, exchange=exchange, routing_key=routing_key)
-        channel.basic_publish(exchange=exchange, routing_key=routing_key, body=message)
-        connection.close()
-        logging.info("Message published to: " + exchange + "/" + routing_key)
-    except Exception as ex:
-        logging.critical("Could not send message due to connection issues (" + type(ex).__name__ + ")")
+        self.exchange = exchange
+        self.routing_key = routing_key
+        logging.info("Initiating Channel")
+        self.channel = self.connection.channel()
+        self.channel.exchange_declare(exchange=exchange, type=topic_type)
+        self.channel.queue_declare(queue=queue)
+        self.channel.queue_bind(queue=queue, exchange=exchange, routing_key=routing_key)
+
+    def send_message(self, message):
+        try:
+            self.channel.basic_publish(exchange=self.exchange, routing_key=self.routing_key, body=message)
+            logging.info("Message published to: " + self.exchange + "/" + self.routing_key)
+        except Exception as ex:
+            logging.critical("Could not send message due to connection issues (" + type(ex).__name__ + ")")
+
+    def close_connection(self):
+        logging.info("Closing RabbitMQ connection")
+        self.channel.close()
+        self.connection.close()

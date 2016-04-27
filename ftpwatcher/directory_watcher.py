@@ -7,13 +7,13 @@ import logging
 import datetime
 
 
-def watch(directory_path, file_index, config):
+def watch(directory_path, file_index, config, rabbit_connector):
     logging.info("Starting watcher for directory: " + directory_path)
     wm = pyinotify.WatchManager()
     masktypes = pyinotify.IN_CLOSE_WRITE | pyinotify.IN_MOVED_TO
     notifier = pyinotify.Notifier(wm, EventHandler(file_index))
     wm.add_watch(directory_path, mask=masktypes)
-    thread = Thread(target=package_analyzer.loop, args=(file_index, config))
+    thread = Thread(target=package_analyzer.loop, args=(file_index, config, rabbit_connector))
     thread.start()
     notifier.loop()
 
