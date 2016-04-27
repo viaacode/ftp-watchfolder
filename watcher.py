@@ -27,22 +27,25 @@ class Watcher(daemon):
         self.connector = None
 
     def run(self):
-        watching_folder = sys.argv[2]
-        config = configparser.ConfigParser()
-        config.read(watching_folder + "/.watcher.conf")
-        default = config['DEFAULT']
         config_logger(sys.argv[2])
-        self.connector = Connector(
-                host=config['RABBIT_MQ_HOST'],
-                port=int(config['RABBIT_MQ_PORT']),
-                username=config['RABBIT_MQ_USER'],
-                password=config['RABBIT_MQ_PASSWORD'],
-                exchange=config['RABBIT_MQ_SUCCESS_EXCHANGE'],
-                topic_type=config['RABBIT_MQ_TOPIC_TYPE'],
-                queue=config['RABBIT_MQ_SUCCESS_QUEUE'],
-                routing_key=config['FLOW_ID']
-        )
-        ftpwatcher.watch_folder(sys.argv[2], default, self.connector)
+        try:
+            watching_folder = sys.argv[2]
+            config = configparser.ConfigParser()
+            config.read(watching_folder + "/.watcher.conf")
+            default = config['DEFAULT']
+            self.connector = Connector(
+                    host=config['RABBIT_MQ_HOST'],
+                    port=int(config['RABBIT_MQ_PORT']),
+                    username=config['RABBIT_MQ_USER'],
+                    password=config['RABBIT_MQ_PASSWORD'],
+                    exchange=config['RABBIT_MQ_SUCCESS_EXCHANGE'],
+                    topic_type=config['RABBIT_MQ_TOPIC_TYPE'],
+                    queue=config['RABBIT_MQ_SUCCESS_QUEUE'],
+                    routing_key=config['FLOW_ID']
+            )
+            ftpwatcher.watch_folder(sys.argv[2], default, self.connector)
+        except Exception as ex:
+            logging.critical("Failed to start watcher: {}".format(str(ex)))
 
     def stop(self):
         if not self.connector is None:
