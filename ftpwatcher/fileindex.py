@@ -54,7 +54,6 @@ class FileIndex:
                 package = Package()
                 package.add_file(file_path, file_name, file_type, self.config)
                 self.packages.update({package_name: package})
-            logging.info("Accepted file for package handling: " + file_name)
         else:
             logging.info("Refused file for package handling: " + file_name)
 
@@ -81,13 +80,18 @@ class Package:
         self.times_checked = 0
 
     def add_file(self, file_path, file_name, file_type, config):
-        self.files.append({
-            "file_name": file_name,
-            "file_path": file_path,
-            "timestamp": datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%dT%H:%M:%S'),
-            "md5": generate_md5(path.join(file_path, file_name), config),
-            "file_type": file_type
-        })
+        file = list(filter(lambda file_entry: file_entry["file_name"] == file_name and file_entry["file_path"] == file_path, self.files))
+        if len(file) > 0:
+            logging.info("File {} was already present in the index")
+        else:
+            self.files.append({
+                "file_name": file_name,
+                "file_path": file_path,
+                "timestamp": datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%dT%H:%M:%S'),
+                "md5": generate_md5(path.join(file_path, file_name), config),
+                "file_type": file_type
+            })
+            logging.info("Accepted file for package handling: " + file_name)
 
     def remove_file(self, file_name):
         file = list(filter(lambda file_entry: file_entry["file_name"] == file_name, self.files))
