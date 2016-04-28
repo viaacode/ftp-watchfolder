@@ -6,8 +6,6 @@ import time
 import logging
 import datetime
 
-from ftpwatcher.util.package_util import get_package_name
-
 
 def watch(directory_path, file_index, config):
     logging.info("Starting watcher for directory: " + directory_path)
@@ -32,7 +30,7 @@ class EventHandler(pyinotify.ProcessEvent):
     def add_to_index(self, event):
         if not event.dir:
             self.file_index.add_file(file_path=event.path, file_name=event.name)
-            logging.info("{}: Received a new file - {}".format(self.get_time(), event.name))
+            logging.info("Received a new file - {}".format(self.get_time(), event.name))
 
     def process_IN_CLOSE_WRITE(self, event):
         self.add_to_index(event)
@@ -42,6 +40,5 @@ class EventHandler(pyinotify.ProcessEvent):
 
     def process_IN_DELETE(self, event):
         if not event.dir:
-            package_name = get_package_name(event.name)
-            self.file_index.packages.get(package_name).remove_file(event.name)
-            logging.info("{}: File {} was deleted from directory.".format(self.get_time(), event.name))
+            self.file_index.remove_file(event.name)
+            logging.info("File {} was deleted from directory.".format(self.get_time(), event.name))
