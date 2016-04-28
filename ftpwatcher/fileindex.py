@@ -6,10 +6,7 @@ from os import path
 
 from ftpwatcher.util import md5_generator
 from ftpwatcher.package_file_recognizer import is_collateral, is_essence, is_sidecar
-
-
-def get_package_name(file_name):
-    return file_name.split(".")[0]
+from ftpwatcher.util.package_util import get_package_name
 
 
 def generate_md5(file_path, config):
