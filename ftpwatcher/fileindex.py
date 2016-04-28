@@ -58,6 +58,13 @@ class FileIndex:
         else:
             logging.info("Refused file for package handling: " + file_name)
 
+    def remove_file(self, file_name):
+        package_name = get_package_name(file_name)
+        package = self.packages.get(package_name)
+        package.remove_file(file_name)
+        if not package.has_files():
+            self.remove_package(package_name)
+
     def remove_package(self, package_name):
         logging.info("Removing Index {}".format(package_name))
         new_index = {}
@@ -82,8 +89,19 @@ class Package:
             "file_type": file_type
         })
 
+    def remove_file(self, file_name):
+        file = list(filter(lambda file_entry: file_entry["file_name"] == file_name, self.files))
+        if len(file) > 0:
+            self.files.remove(file[0])
+            logging.info("{} removed from index".format(file_name))
+        else:
+            logging.info("{} was not found in the index".format(file_name))
+
     def reached_max_checks(self, max_amount):
         return self.times_checked >= max_amount
 
     def increment_times_checked(self):
         self.times_checked += 1
+
+    def has_files(self):
+        return len(self.files) > 0

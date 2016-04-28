@@ -42,5 +42,6 @@ class EventHandler(pyinotify.ProcessEvent):
 
     def process_IN_DELETE(self, event):
         if not event.dir:
-            self.file_index.remove_package(get_package_name(event.name))
+            package_name = get_package_name(event.name)
+            self.file_index.packages.get(package_name).remove_file(event.name)
             logging.info("{}: File {} was deleted from directory.".format(self.get_time(), event.name))
