@@ -35,6 +35,7 @@ def process_package(file_index, package_name, destination_folder, config):
         move_file(package, destination_folder)
         send_message(package, config)
         file_index.remove_package(package_name)
+        logging.info('Package processed: {}'.format(package_name))
     except Exception as ex:
         logging.critical("Processing Package {} failed! ExceptionType: {}, Message: {}".format(package_name, type(ex).__name__, str(ex)))
 
