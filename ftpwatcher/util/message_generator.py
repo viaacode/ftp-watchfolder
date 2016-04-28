@@ -9,6 +9,6 @@ def create_mq_message(file_list, config):
         "server": config['FTP_SERVER'],
         "username": config['FTP_USERNAME'],
         "password": config['FTP_PASSWORD'],
-        "sid_package": file_list,
+        "sip_package": file_list,
         "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     })
