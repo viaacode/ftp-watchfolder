@@ -10,7 +10,7 @@ import datetime
 def watch(directory_path, file_index, config):
     logging.info("Starting watcher for directory: " + directory_path)
     wm = pyinotify.WatchManager()
-    masktypes = pyinotify.IN_CLOSE_WRITE | pyinotify.IN_MOVED_TO | pyinotify.IN_DELETE | pyinotify.IN_MOVED_FROM
+    masktypes = pyinotify.IN_CLOSE_WRITE | pyinotify.IN_MOVED_TO | pyinotify.IN_DELETE
     notifier = pyinotify.Notifier(wm, EventHandler(file_index))
     wm.add_watch(directory_path, mask=masktypes)
     thread = Thread(target=package_analyzer.loop, args=(file_index, config))
@@ -44,7 +44,4 @@ class EventHandler(pyinotify.ProcessEvent):
         self.add_to_index(event)
 
     def process_IN_DELETE(self, event):
-        self.remove_from_index(event)
-
-    def process_IN_MOVED_FROM(self, event):
         self.remove_from_index(event)
