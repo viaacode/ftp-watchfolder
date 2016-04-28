@@ -35,7 +35,7 @@ class EventHandler(pyinotify.ProcessEvent):
     def remove_from_index(self, event):
         if not event.dir:
             self.file_index.remove_file(event.name)
-            logging.info("File {} was deleted from directory.".format(self.get_time(), event.name))
+            logging.info("File {} was deleted/moved from directory.".format(self.get_time(), event.name))
 
     def process_IN_CLOSE_WRITE(self, event):
         self.add_to_index(event)
