@@ -1,7 +1,8 @@
 import logging
 import time
 
-from ftpwatcher.messenger import send_message, send_error_message
+from ftpwatcher.messenger import send_message
+from ftpwatcher.util.file_util import move_file
 
 
 def loop(file_index, config):
@@ -9,25 +10,33 @@ def loop(file_index, config):
     max_nr_of_checks = int(config['CHECK_PACKAGE_AMOUNT'])
     while not_gonna_give_you_up:
         logging.info('Checking file_index on completed packages...')
-        remaining_packages = {}
-        for index_name in file_index.packages.keys():
+        for package_name in file_index.packages.keys():
             try:
-                package = file_index.packages.get(index_name)
+                package = file_index.packages.get(package_name)
                 if is_package_complete(package, config):
-                    logging.info('Package \'{}\' complete.'.format(index_name))
-                    send_message(package, config)
-                    file_index.remove_package(index_name)
+                    logging.info('Package \'{}\' complete.'.format(package_name))
+                    process_package(file_index, package_name, config['PROCESSING_FOLDER_NAME'], config)
                 elif package.reached_max_checks(max_nr_of_checks):
-                    logging.info('Package \'{}\' considered incomplete. Maximum checks reached.'.format(index_name))
-                    send_error_message(package, config)
-                    file_index.remove_package(index_name)
+                    logging.info('Package \'{}\' considered incomplete. Maximum checks reached.'.format(package_name))
+                    process_package(file_index, package_name, config['INCOMPLETE_FOLDER_NAME'], config)
                 else:
                     package.increment_times_checked()
-                    logging.info('Package {} is still incomplete. Check {} of {}'.format(index_name, package.times_checked, max_nr_of_checks))
+                    logging.info('Package {} is still incomplete. Check {} of {}'.format(package_name, package.times_checked, max_nr_of_checks))
             except Exception as ex:
                 logging.error('Checking file_index failed: {}'.format(str(ex)))
         logging.info('{} incomplete packages remaining...'.format(len(file_index.packages)))
         time.sleep(int(config['CHECK_PACKAGE_INTERVAL']))
+
+
+def process_package(file_index, package_name, destination_folder, config):
+    try:
+        logging.info('Processing package: {}'.format(package_name))
+        package = file_index.packages.get(package_name)
+        move_file(package, destination_folder)
+        send_message(package, config)
+        file_index.remove_package(package_name)
+    except Exception as ex:
+        logging.critical("Processing Package {} failed! ExceptionType: {}, Message: {}".format(package_name, type(ex).__name__, str(ex)))
 
 
 def is_package_complete(package, config):

@@ -20,11 +20,8 @@ class Connector:
         self.channel.queue_bind(queue=queue, exchange=exchange, routing_key=routing_key)
 
     def send_message(self, message):
-        try:
-            self.channel.basic_publish(exchange=self.exchange, routing_key=self.routing_key, body=message)
-            logging.info("Message published to: " + self.exchange + "/" + self.routing_key)
-        except Exception as ex:
-            logging.critical("Could not send message due to connection issues (" + type(ex).__name__ + ")")
+        self.channel.basic_publish(exchange=self.exchange, routing_key=self.routing_key, body=message)
+        logging.info("Message published to: " + self.exchange + "/" + self.routing_key)
 
     def close_connection(self):
         logging.info("Closing RabbitMQ connection")
