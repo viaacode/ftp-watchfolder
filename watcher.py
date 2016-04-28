@@ -6,7 +6,6 @@ import sys
 
 import ftpwatcher
 from ftpwatcher.util.daemon3x import daemon
-from ftpwatcher.util.rabbit_connector import Connector
 
 __author__ = 'viaa'
 
