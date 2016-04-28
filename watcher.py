@@ -22,10 +22,6 @@ def config_logger(file_path):
 
 
 class Watcher(daemon):
-    def __init__(self, pidfile):
-        super().__init__(pidfile)
-        self.connector = None
-
     def run(self):
         config_logger(sys.argv[2])
         try:
@@ -33,24 +29,9 @@ class Watcher(daemon):
             config = configparser.ConfigParser()
             config.read(watching_folder + "/.watcher.conf")
             default = config['DEFAULT']
-            self.connector = Connector(
-                    host=default['RABBIT_MQ_HOST'],
-                    port=int(default['RABBIT_MQ_PORT']),
-                    username=default['RABBIT_MQ_USER'],
-                    password=default['RABBIT_MQ_PASSWORD'],
-                    exchange=default['RABBIT_MQ_SUCCESS_EXCHANGE'],
-                    topic_type=default['RABBIT_MQ_TOPIC_TYPE'],
-                    queue=default['RABBIT_MQ_SUCCESS_QUEUE'],
-                    routing_key=default['FLOW_ID']
-            )
-            ftpwatcher.watch_folder(sys.argv[2], default, self.connector)
+            ftpwatcher.watch_folder(sys.argv[2], default)
         except Exception as ex:
             logging.critical("Failed to start watcher: {}: {}".format(type(ex).__name__, str(ex)))
-
-    def stop(self):
-        if not self.connector is None:
-            self.connector.close_connection()
-        super().stop()
 
 
 def print_error(message):
