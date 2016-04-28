@@ -1,5 +1,3 @@
-__author__ = 'viaa'
-
 import os
 import logging
 
