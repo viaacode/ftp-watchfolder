@@ -90,6 +90,7 @@ CHECK_PACKAGE_INTERVAL = 1                              # Interval the timer has
 CHECK_PACKAGE_AMOUNT = 10                               # Times the timer will check if the package is complete
 PROCESSING_FOLDER_NAME = processing                     # Folder name to move completed packages to, this folder has to exist in the folder you want to watch
 INCOMPLETE_FOLDER_NAME = incomplete                     # Folder name to move failed packages to, same as above.
+MD5_CALC = True | False                                 # Enable | Disable MD5 generation
 
 ```
 
