@@ -47,7 +47,7 @@ def is_package_complete(package, config):
 
     for entry in package.files:
         file_type = entry.get("file_type")
-        if file_type == "essence":
+        if file_type == "essence" and entry.get("md5") != "":
             has_essence = True
         elif file_type == "sidecar":
             has_sidecar = True

@@ -66,28 +66,31 @@ To start the daemon you will need to create a .watcher.conf file in the director
 
 ```
 [DEFAULT]
-CP = VRT                                            # CP Name
-FLOW_ID = VRT.VIDEO.1                               # System unique flow id
-ESSENCE_FILE_TYPE = mxf|txt                         # Extensions defining the Essence file, seperated by '|' if more
-SIDECAR_FILE_TYPE = xml                             # Extensions defining the sidecar, same as essence
-COLLATERAL_FILE_TYPE = srt                          # Extensions defining the collateral file, same as essence. Leave this empty if no extensions apply (daemon will not check on collaterals)
-RABBIT_MQ_HOST = do-tst-rab-01.do.viaa.be           # RabbitMQ hostname/address
-RABBIT_MQ_PORT = 5672                               # RabbitMQ host server port
-RABBIT_MQ_SUCCESS_EXCHANGE = daemon.success         # Exchange name for the completed package
-RABBIT_MQ_SUCCESS_QUEUE = vrt.video.1               # The queue name to bind to for completed package exchange
-RABBIT_MQ_ERROR_EXCHANGE = daemon.errors            # Exchange name for failed packages
-RABBIT_MQ_ERROR_QUEUE = incomplete_packages         # Queue name to bind to the failed packag exchange
-RABBIT_MQ_TOPIC_TYPE = direct                       # Topic type set on the Exchanges on creations if they do not exist
-RABBIT_MQ_USER = [username]                         # Username for RabbitMQ access
-RABBIT_MQ_PASSWORD = [pasword]                      # Password for RabbitMQ user specified above
-FTP_SERVER = [ftp-url]                              # url where of the server where the files are stored
-FTP_USERNAME = [usename]                            # Username to access the ftp server
-FTP_PASSWORD = [password]                           # Password for the user to access the ftp server
-CHECK_PACKAGE_INTERVAL = 1                          # Interval the timer has to wait between package completion checks
-CHECK_PACKAGE_AMOUNT = 10                           # Times the timer will check if the package is complete
-PROCESSING_FOLDER_NAME = processing                 # Folder name to move completed packages to, this folder has to exist in the folder you want to watch
-INCOMPLETE_FOLDER_NAME = incomplete                 # Folder name to move failed packages to, same as above.
-MD5_CALC = True | False                             # Enable | Disable MD5 generation
+CP = VRT                                                # CP Name
+FLOW_ID = VRT.VIDEO.1                                   # System unique flow id
+ESSENCE_FILE_TYPE = mxf|txt                             # Extensions defining the Essence file, seperated by '|' if more
+SIDECAR_FILE_TYPE = xml                                 # Extensions defining the sidecar, same as essence
+COLLATERAL_FILE_TYPE = srt                              # Extensions defining the collateral file, same as essence. Leave this empty if no extensions apply (daemon will not check on collaterals)
+RABBIT_MQ_HOST = do-tst-rab-01.do.viaa.be               # RabbitMQ hostname/address
+RABBIT_MQ_PORT = 5672                                   # RabbitMQ host server port
+RABBIT_MQ_SUCCESS_EXCHANGE = daemon.success             # Exchange name for the completed package
+RABBIT_MQ_SUCCESS_QUEUE = vrt.video.1                   # The queue name to bind to for completed package exchange
+RABBIT_MQ_ERROR_EXCHANGE = daemon.errors                # Exchange name for failed packages
+RABBIT_MQ_ERROR_QUEUE = incomplete_packages             # Queue name to bind to the failed packag exchange
+RABBIT_MQ_MD5_REQUEST_EXCHANGE = md5_watchfolder        # Exchange name for the md5 generator
+RABBIT_MQ_MD5_REQUEST_QUEUE = md5_watchfolder_request   # The queue name to bind to for requesting a MD5 for an essence
+RABBIT_MQ_MD5_RESPONSE_QUEUE = md5_watchfolder_response # The queue name to bind to for completed MD5s
+RABBIT_MQ_TOPIC_TYPE = direct                           # Topic type set on the Exchanges on creations if they do not exist
+RABBIT_MQ_USER = [username]                             # Username for RabbitMQ access
+RABBIT_MQ_PASSWORD = [pasword]                          # Password for RabbitMQ user specified above
+FTP_SERVER = [ftp-url]                                  # url where of the server where the files are stored
+FTP_USERNAME = [usename]                                # Username to access the ftp server
+FTP_PASSWORD = [password]                               # Password for the user to access the ftp server
+CHECK_PACKAGE_INTERVAL = 1                              # Interval the timer has to wait between package completion checks
+CHECK_PACKAGE_AMOUNT = 10                               # Times the timer will check if the package is complete
+PROCESSING_FOLDER_NAME = processing                     # Folder name to move completed packages to, this folder has to exist in the folder you want to watch
+INCOMPLETE_FOLDER_NAME = incomplete                     # Folder name to move failed packages to, same as above.
+MD5_CALC = True | False                                 # Enable | Disable MD5 generation
 
 ```
 
