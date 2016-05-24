@@ -18,7 +18,8 @@ def loop(file_index, config):
                     process_package(file_index, package_name, config['PROCESSING_FOLDER_NAME'], config)
                 elif package.reached_max_checks(max_nr_of_checks):
                     logging.info('Package \'{}\' considered incomplete. Maximum checks reached.'.format(package_name))
-                    process_package(file_index, package_name, config['INCOMPLETE_FOLDER_NAME'], config)
+                    move_file(package, config['INCOMPLETE_FOLDER_NAME'])
+                    file_index.remove_package(package_name)
                 else:
                     package.increment_times_checked()
                     logging.info('Package {} is still incomplete. Check {} of {}'.format(package_name, package.times_checked, max_nr_of_checks))
