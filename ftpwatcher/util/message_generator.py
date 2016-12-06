@@ -1,8 +1,10 @@
 import json
 import datetime
+import logging
 
 
 def create_mq_message(file_list, config):
+    logging.info("Creating RabbitMQ Message");
     return json.dumps({
         "cp_name": config['CP'],
         "flow_id": config['FLOW_ID'],

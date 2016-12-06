@@ -34,7 +34,8 @@ def process_package(file_index, package_name, destination_folder, config):
     try:
         logging.info('Processing package: {}'.format(package_name))
         package = file_index.packages.get(package_name)
-        move_file(package, destination_folder)
+        if not package.moved:
+            move_file(package, destination_folder)
         send_message(package, config)
         file_index.remove_package(package_name)
         logging.info('Package processed: {}'.format(package_name))
@@ -50,13 +51,18 @@ def is_package_complete(package, config):
     for entry in package.files:
         file_type = entry.get("file_type")
         if file_type == "essence":
+            logging.info("Package has essence")
             has_essence = True
         elif file_type == "sidecar":
+            logging.info("Package has sidecar")
             has_sidecar = True
         elif file_type == "collateral":
+            logging.info("Package has collateral")
             has_collateral = True
 
     if config['COLLATERAL_FILE_TYPE']:
+        logging.info("Package has essence, sidecar and collateral")
         return has_essence and has_sidecar and has_collateral
     else:
+        logging.info("Package has essence and sidecar")
         return has_essence and has_sidecar

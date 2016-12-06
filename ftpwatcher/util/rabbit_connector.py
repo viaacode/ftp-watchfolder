@@ -14,12 +14,15 @@ class Connector:
         self.exchange = exchange
         self.routing_key = routing_key
         logging.info("Initiating Channel")
+        self.connection_attempts = 50
+        self.retry_delay = 10000
         self.channel = self.connection.channel()
         self.channel.exchange_declare(exchange=exchange, type=topic_type)
         self.channel.queue_declare(queue=queue)
         self.channel.queue_bind(queue=queue, exchange=exchange, routing_key=routing_key)
 
     def send_message(self, message):
+        logging.info("Publishing message")
         self.channel.basic_publish(exchange=self.exchange, routing_key=self.routing_key, body=message)
         logging.info("Message published to: " + self.exchange + "/" + self.routing_key)
 
