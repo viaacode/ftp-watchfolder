@@ -10,8 +10,8 @@ def loop(file_index, config):
     max_nr_of_checks = int(config['CHECK_PACKAGE_AMOUNT'])
     while not_gonna_give_you_up:
         logging.info('Checking file_index on completed packages...')
-        keys = file_index.packages.keys()[:]
-        for package_name in keys:
+        logging.info('Packages size: {}'.format(len(file_index.packages)))
+        for package_name in list(file_index.packages.keys()):
             try:
                 package = file_index.packages.get(package_name)
                 if is_package_complete(package, config):
@@ -50,7 +50,7 @@ def is_package_complete(package, config):
 
     for entry in package.files:
         file_type = entry.get("file_type")
-        if file_type == "essence" and entry.get("md5") != "":
+        if file_type == "essence":
             logging.info("Package has essence")
             has_essence = True
         elif file_type == "sidecar":
@@ -61,8 +61,8 @@ def is_package_complete(package, config):
             has_collateral = True
 
     if config['COLLATERAL_FILE_TYPE']:
-        logging.info("Package has essence, sidecar and collateral")
+        logging.info("Package has essence, sidecar and collateral: {}".format(has_essence and has_sidecar and has_collateral))
         return has_essence and has_sidecar and has_collateral
     else:
-        logging.info("Package has essence and sidecar")
+        logging.info("Package has essence and sidecar: {}".format(has_essence and has_sidecar))
         return has_essence and has_sidecar
