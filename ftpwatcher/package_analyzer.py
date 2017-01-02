@@ -10,7 +10,7 @@ def loop(file_index, config):
     max_nr_of_checks = int(config['CHECK_PACKAGE_AMOUNT'])
     while not_gonna_give_you_up:
         logging.info('Checking file_index on completed packages...')
-        keys = file_index.packages.keys()
+        keys = file_index.packages.keys()[:]
         for package_name in keys:
             try:
                 package = file_index.packages.get(package_name)
