@@ -24,4 +24,5 @@ def move_file(package, folder):
                 logging.critical("{} does not exist!".format(new_path))
         else:
             logging.critical("File {} does not exist!".format(source))
+    package.moved = True
     pass
