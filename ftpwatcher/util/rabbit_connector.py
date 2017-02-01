@@ -7,9 +7,9 @@ class Connector:
     def __init__(self, host, port, username, password, exchange, topic_type, queue, routing_key):
         logging.info("Connecting to Rabbit MQ")
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(
-                host=host,
-                port=port,
-                credentials=PlainCredentials(username, password)
+            host=host,
+            port=port,
+            credentials=PlainCredentials(username, password)
         ))
         self.exchange = exchange
         self.routing_key = routing_key
@@ -23,7 +23,8 @@ class Connector:
 
     def send_message(self, message):
         logging.info("Publishing message")
-        self.channel.basic_publish(exchange=self.exchange, routing_key=self.routing_key, body=message)
+        self.channel.basic_publish(exchange=self.exchange, routing_key=self.routing_key, body=message,
+                                   properties=pika.BasicProperties(delivery_mode=2, ))
         logging.info("Message published to: " + self.exchange + "/" + self.routing_key)
 
     def close_connection(self):
